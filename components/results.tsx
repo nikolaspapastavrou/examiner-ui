@@ -1,20 +1,20 @@
+"use client";
 import React, { useState } from 'react';
 
 type QuestionData = {
     title: string;
     studentScore: string;
     explanation: string;
-    resources: string[];
-};
+    resources: { description: string; url: string }[];};
 
 const questions: QuestionData[] = [
     {
-        title: "Q1 Lists",
+        title: "Q1 Loops",
         studentScore: "2/3",
         explanation: "The correct answer was C. Understanding how lists are implemented in memory can help you here.",
         resources: [
-            "Lecture 1 slide 10 explains data structures.",
-            "Book chapter 2 on data structures."
+            { description: "Lecture 1 slide 10 explains data structures.", url: "http://example.com/lecture1" },
+            { description: "Book chapter 2 on data structures.", url: "http://example.com/bookchapter2" }
         ]
     },
     {
@@ -22,10 +22,37 @@ const questions: QuestionData[] = [
         studentScore: "3/3",
         explanation: "The correct answer was A. Amdahl's Law is crucial for understanding the limits of parallel computing.",
         resources: [
-            "Lecture 3 slide 15 explains Amdahl's Law.",
-            "Discussion in tutorial 2 covers this topic in depth."
+            { description: "Lecture 1 slide 10 explains data structures.", url: "http://example.com/lecture1" },
+            { description: "Book chapter 2 on data structures.", url: "http://example.com/bookchapter2" }
         ]
-    }
+    },
+    {
+        title: "Q3 Asymptotic Analysis",
+        studentScore: "10/10",
+        explanation: "Part A: The correct answer was O(1). Multiplying two numbers is constant time. Part B: The correct answer was O(N). We loop through each element N times. The split_point variable is not used, so it is not O(log N).",
+        resources: [
+            { description: "Lecture 1 slide 10 explains data structures.", url: "http://example.com/lecture1" },
+            { description: "Book chapter 2 on data structures.", url: "http://example.com/bookchapter2" }
+        ]
+    },
+    {
+        title: "Q4 Bitwise Operators",
+        studentScore: "0/6",
+        explanation: "Part A: The correct answer was `a`. This is because for any x, x ^ x = 0. Also, 0 ^ x = x. Therefore, for part b, result ^ result = 0. XOR is associative.",
+        resources: [
+            { description: "Lecture 1 slide 10 explains data structures.", url: "http://example.com/lecture1" },
+            { description: "Book chapter 2 on data structures.", url: "http://example.com/bookchapter2" }
+        ]
+    },
+    {
+        title: "Q5 List Indexing",
+        studentScore: "3/3",
+        explanation: "Python is 0-indexed. Therefore, to access the 3rd element, we do x[2].",
+        resources: [
+            { description: "Lecture 1 slide 10 explains data structures.", url: "http://example.com/lecture1" },
+            { description: "Book chapter 2 on data structures.", url: "http://example.com/bookchapter2" }
+        ]
+    },
 ];
 
 const Results = () => {
@@ -56,10 +83,12 @@ const Results = () => {
                                 <div className="mt-2">
                                     <p><strong>Explanation:</strong> {question.explanation}</p>
                                     <div>
-                                        <strong>Relevant Resources:</strong>
+                                    <strong>Relevant Resources:</strong>
                                         <ul>
                                             {question.resources.map((resource, idx) => (
-                                                <li key={idx}>{resource}</li>
+                                                <li key={idx}>
+                                                    <a href={resource.url} target="_blank" rel="noopener noreferrer">{resource.description}</a>
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
