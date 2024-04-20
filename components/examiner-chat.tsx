@@ -31,6 +31,22 @@ const questions = [
   // Add more questions as needed
 ];
 
+// Define a custom component for the Typing indicator
+const TypingIndicator = () => {
+  const [text, setText] = useState('Typing.');
+  useEffect(() => {
+    const dotCount = text.split('.').length; // Count the current number of dots
+    const interval = setInterval(() => {
+      // Cycle through different states based on the current text
+      setText(dotCount < 4 ? `Typing${'.'.repeat(dotCount)}` : 'Typing.');
+    }, 500); // Update every 500 milliseconds
+
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, [text]);
+
+  return <p>{text}</p>;
+};
+
 export function ExaminerChat() {
   const [input, setInput] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -143,7 +159,7 @@ export function ExaminerChat() {
             <div className="flex flex-col">
               <span className="font-semibold">AI Assistant</span>
               <div className="bg-white rounded-lg p-2">
-                <p>Typing...</p>
+                <TypingIndicator /> {/* Use TypingIndicator component here */}
               </div>
             </div>
           </div>
