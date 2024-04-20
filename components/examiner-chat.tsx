@@ -21,6 +21,7 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
+
 type ExaminerChatProps = {
   aiMessage: string;
 };
