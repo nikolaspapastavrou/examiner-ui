@@ -231,5 +231,4 @@ const Results : React.FC<ResultsProps> = ({ examType = 1 }) => {
     );
 };
 
-
 export default Results;

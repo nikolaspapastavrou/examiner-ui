@@ -1,11 +1,20 @@
-import {ExaminerChat} from "../components/examiner-chat";
+"use client"
 
-const initialAiMessage = "Hello! Let's start with a simple question. What is the capital city of France?";
+import React, { useState } from 'react';
+import {ExaminerChat} from "../components/examiner-chat";
+import Results from "../components/results";
+
 
 export default function Home() {
+  const [showResults, setShowResults] = useState(false);
+
   return (
     <main className="flex flex-1 w-full">
-      <ExaminerChat aiMessage={initialAiMessage} />
+      {!showResults ? (
+        <ExaminerChat onCompleted={() => setShowResults(true)} />
+      ) : (
+        <Results />
+      )}
     </main>
   );
 }
