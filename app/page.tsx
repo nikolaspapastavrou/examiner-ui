@@ -5,7 +5,7 @@ const initialAiMessage = "Hello! Let's start with a simple question. What is the
 export default function Home() {
   return (
     <main className="flex flex-1 w-full">
-      <ExaminerChat aiMessage={initialAiMessage} />
+      <ExaminerChat />
     </main>
   );
 }
