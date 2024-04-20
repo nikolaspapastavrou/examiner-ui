@@ -126,7 +126,7 @@ export function ExaminerChat() {
     <div className="flex h-screen w-full flex-col bg-white">
       {/* Header section */}
       <div className={`${horizontalPadding} pt-6 pb-4 bg-white shadow`}>
-        <h2 className="text-2xl font-semibold">AI Exam Practice</h2>
+        <h2 className="text-2xl font-semibold">Study Spark AI</h2>
         <h3 className="text-xl font-semibold mt-4">Question {questionNumber}</h3> {/* Use the questionNumber variable here */}
       </div>
 
