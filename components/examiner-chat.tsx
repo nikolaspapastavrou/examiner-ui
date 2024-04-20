@@ -19,41 +19,87 @@ To read more about using these font, please visit the Next.js documentation:
 - App Directory: https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react';
 
-type ExaminerChatProps = {
-  aiMessage: string;
-};
+// Let's assume you have a list of questions
+const questions = [
+  "What is the capital city of France?",
+  "Who wrote 'To Kill a Mockingbird'?",
+  "What is the largest mammal in the world?",
+  // Add more questions as needed
+];
 
-export function ExaminerChat({ aiMessage }: ExaminerChatProps) {
+export function ExaminerChat() {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ sender: 'AI', text: aiMessage }]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [messages, setMessages] = useState([{ sender: 'AI', text: questions[0] }]);
   const [isTyping, setIsTyping] = useState(false);
-  
-  // Handle input change
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+
+  const isFirstQuestion = currentQuestionIndex === 0;
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+  const questionNumber = currentQuestionIndex + 1; // Since array index is 0-based
+
+  useEffect(() => {
+    // Load messages for the current question from localStorage
+    const savedMessages = sessionStorage.getItem(`messages_question_${currentQuestionIndex}`);
+    if (savedMessages) {
+      setMessages(JSON.parse(savedMessages));
+    } else {
+      // Start with the AI's initial message if no saved messages are found
+      setMessages([{ sender: 'AI', text: questions[currentQuestionIndex] }]);
+    }
+  }, [currentQuestionIndex]);
+
+  useEffect(() => {
+    // Save messages to localStorage whenever they change
+    sessionStorage.setItem(`messages_question_${currentQuestionIndex}`, JSON.stringify(messages));
+  }, [messages, currentQuestionIndex]);
+
+  useEffect(() => {
+    // Scroll to the last message
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
 
-  // Handle send button click
   const handleSendMessage = () => {
-    if (input.trim()) {
+    if (input.trim() && !isTyping) {
       setMessages([...messages, { sender: 'User', text: input }]);
       setIsTyping(true);
       setInput('');
 
       // Simulate AI response time
       setTimeout(() => {
-        setMessages((prevMessages) => [...prevMessages, { sender: 'AI', text: "Here's the response!" }]);
+        setMessages((prevMessages) => [...prevMessages, { sender: 'AI', text: "Here's the AI's response!" }]);
         setIsTyping(false);
       }, 2000); // 2 seconds delay
     }
   };
 
-  // Shared horizontal padding value to align all elements
+  const goToNextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setMessages([{ sender: 'AI', text: questions[currentQuestionIndex + 1] }]);
+    }
+  };
+
+  const goToPreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setMessages([{ sender: 'AI', text: questions[currentQuestionIndex - 1] }]);
+    }
+  };
+
+  const handleSubmit = () => {
+    // Handle the submission logic here
+    console.log('Submitting answers...');
+  };
+
   const horizontalPadding = "px-6";
 
   // Add your AI's initial message here.
@@ -65,7 +111,7 @@ export function ExaminerChat({ aiMessage }: ExaminerChatProps) {
       {/* Header section */}
       <div className={`${horizontalPadding} pt-6 pb-4 bg-white shadow`}>
         <h2 className="text-2xl font-semibold">AI Exam Practice</h2>
-        <h3 className="text-xl font-semibold mt-4">Question 1</h3>
+        <h3 className="text-xl font-semibold mt-4">Question {questionNumber}</h3> {/* Use the questionNumber variable here */}
       </div>
 
       {/* Chat messages section */}
@@ -102,6 +148,7 @@ export function ExaminerChat({ aiMessage }: ExaminerChatProps) {
             </div>
           </div>
         )}
+        <div ref={endOfMessagesRef} />
       </div>
 
       {/* Input and send button section */}
@@ -124,12 +171,31 @@ export function ExaminerChat({ aiMessage }: ExaminerChatProps) {
           </Button>
         </div>
       </div>
-
       {/* Navigation buttons section */}
       <div className={`${horizontalPadding} py-4 bg-white shadow`}>
-      <div className="flex justify-between">
-          <Button variant="black" className="hover:bg-white hover:text-black border border-black">Previous</Button>
-          <Button variant="black" className="hover:bg-white hover:text-black border border-black">Next</Button>
+        <div className="flex justify-between">
+          <Button 
+            className={`hover:bg-white hover:text-black border border-black ${isFirstQuestion ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-black text-white'}`}
+            onClick={goToPreviousQuestion}
+            disabled={isFirstQuestion}
+          >
+            Previous
+          </Button>
+          {isLastQuestion ? (
+            <Button 
+              className="hover:bg-white hover:text-black border border-black bg-black text-white" 
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          ) : (
+            <Button 
+              className="hover:bg-white hover:text-black border border-black bg-black text-white" 
+              onClick={goToNextQuestion}
+            >
+              Next
+            </Button>
+          )}
         </div>
       </div>
     </div>
