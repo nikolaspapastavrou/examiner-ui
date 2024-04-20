@@ -79,7 +79,7 @@ export function ExaminerChat() {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     setInput(e.target.value);
   };
 
@@ -175,7 +175,7 @@ export function ExaminerChat() {
             placeholder="Type your answer here..."
             value={input}
             onChange={handleInputChange}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            onKeyPress={(e: any) => e.key === 'Enter' && handleSendMessage()}
             disabled={isTyping} // Disable the input field when AI is typing
           />
           <Button 
