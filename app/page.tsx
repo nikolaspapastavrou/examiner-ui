@@ -1,16 +1,22 @@
-"use client"
+"use client";
 
+// Home component
 import React, { useState } from 'react';
-import {ExaminerChat} from "../components/examiner-chat";
+import { ExaminerChat } from "../components/examiner-chat";
 import Results from "../components/results";
-import {Submission} from "../components/submission";
+import { Submission } from "../components/submission";
 
 export default function Home() {
-  const [showResults, setShowResults] = useState(false);
+  const [step, setStep] = useState('submission');
+
+  const goToExaminer = () => setStep('examiner');
+  const goToResults = () => setStep('results');
 
   return (
     <main className="flex flex-1 w-full">
-      <Submission/>
+      {step === 'submission' && <Submission onFileSubmitted={goToExaminer} />}
+      {step === 'examiner' && <ExaminerChat onCompleted={goToResults} />}
+      {step === 'results' && <Results />}
     </main>
   );
 }
