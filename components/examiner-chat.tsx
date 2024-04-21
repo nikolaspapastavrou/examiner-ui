@@ -66,19 +66,33 @@ export function ExaminerChat({ onCompleted }) {
     setInput(e.target.value);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (input.trim() && !isTyping) {
-      setMessages([...messages, { sender: 'User', text: input }]);
+      const userMessage = { sender: 'User', text: input };
+      setMessages(prev => [...prev, userMessage]);
       setIsTyping(true);
       setInput('');
-
-      // Simulate AI response time
-      setTimeout(() => {
-        setMessages((prevMessages) => [...prevMessages, { sender: 'AI', text: "Here's the AI's response!" }]);
-        setIsTyping(false);
-      }, 2000); // 2 seconds delay
+  
+      // Fetch data from API
+      const response = await fetch('https://mongodbgenaihackathon-0f9e3cd45362.herokuapp.com/api/get_answer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          original_question: questions[currentQuestionIndex],
+          conversation_history: messages.map(m => m.text)
+        })
+      });
+      const data = await response.json();
+      
+      setIsTyping(false);
+      setMessages(prev => [...prev, { sender: 'AI', text: data.message }]);
     }
   };
+
+  useEffect(() => {
+    setInput(''); // Clear input on question change
+    setIsTyping(false); // Reset typing indicator on question change
+  }, [currentQuestionIndex]);
 
   const goToNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
