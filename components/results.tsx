@@ -21,7 +21,8 @@ const questions1: QuestionData[] = [
         moreQuestions: [
             {description: "Spring 2020 Quest Question 3 Mystery Function", question: "https://drive.google.com/file/u/1/d/1sCleoTMSogFmyihz1-ns71riunWtl1ir/view?usp=sharing", solution: "https://drive.google.com/file/d/1lSs3TXCJrqB22zgLBByZTI1-5ITqfE9K/view"},
             {description: "Fall 2019 Question 8", question: "https://cs10.org/sp20/exams/final/2019Fa/exam.pdf", solution: "https://cs10.org/sp20/exams/final/2019Fa/answers.pdf"},
-        ]
+        ],
+        
     },
     {
         title: "Q2 Amdahl's Law",
