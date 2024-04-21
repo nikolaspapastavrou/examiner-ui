@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 
 // Let's assume you have a list of questions
 const questions = [
-  "Fill in the blanks. In Python, the data-type of the _A__ of a dictionary must be ___B____, so strings __C__ be used as __A___ in a dictionary. \n A: Keys, Values B: Mutuable, Immutable C: Can, not not. Explain your choice.",
+  "What is the runtime of this Python code: `square = lambda n: n * n`? A: O(1) B: O(logN) C: O(N) D: O(N^2) E:O(2^N). Explain your choice.",
   "Which of the following statements is True regarding Test-Driven-Development? A: All tests we write should pass before we start coding. B: Python will error if we don't write tests for our code. C: Edge cases are unimportant and don't need to be tested. D: We should write tests before we start implementing programs. Explain your choice",
   "What does Amdahl's law describe? A: The more cores (CPUs) we add, the less speedup we get. B. There is a limit to the amount of speedup we can get since parts of our code must run sequentially. C: There is a limit to how many cores we can add to solve one computational problem. Explain your choice",
   // Add more questions as needed
